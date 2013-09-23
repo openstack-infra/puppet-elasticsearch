@@ -14,8 +14,9 @@
 #
 # Class to install elasticsearch.
 #
-class logstash::elasticsearch (
-  discover_nodes = ['localhost']
+class elasticsearch (
+  $discover_nodes = ['localhost'],
+  $version = '0.20.5'
 ) {
   # install java runtime
   package { 'java7-runtime-headless':
@@ -23,26 +24,51 @@ class logstash::elasticsearch (
   }
 
   exec { 'get_elasticsearch_deb':
-    command => 'wget http://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-0.20.5.deb -O /tmp/elasticsearch-0.20.5.deb',
+    command => "wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-${version}.deb -O /tmp/elasticsearch-${version}.deb",
     path    => '/bin:/usr/bin',
-    creates => '/tmp/elasticsearch-0.20.5.deb',
+    creates => "/tmp/elasticsearch-${version}.deb",
+  }
+
+  exec { 'gen_elasticsearch_deb_sha1':
+    command => "sha1sum elasticsearch-${version}.deb > /tmp/elasticsearch-${version}.deb.sha1.gen",
+    path    => '/bin:/usr/bin',
+    cwd     => '/tmp',
+    creates => "/tmp/elasticsearch-${version}.deb.sha1.gen",
+    require => [
+      Exec['get_elasticsearch_deb'],
+    ]
+  }
+
+  exec { 'get_elasticsearch_deb_sha1':
+    command => "wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-${version}.deb.sha1.txt -O /tmp/elasticsearch-${version}.deb.sha1.txt",
+    path    => '/bin:/usr/bin',
+    creates => "/tmp/elasticsearch-${version}.deb.sha1.txt",
+  }
+
+  exec { 'check_elasticsearch_sha1':
+    command => "diff /tmp/elasticsearch-${version}.deb.sha1.txt /tmp/elasticsearch-${version}.deb.sha1.gen",
+    path    => '/bin:/usr/bin',
+    require => [
+      Exec['gen_elasticsearch_deb_sha1'],
+      Exec['get_elasticsearch_deb_sha1'],
+    ]
   }
 
   # install elastic search
   package { 'elasticsearch':
     ensure    => latest,
-    source    => '/tmp/elasticsearch-0.20.5.deb',
+    source    => "/tmp/elasticsearch-${version}.deb",
     provider  => 'dpkg',
     subscribe => Exec['get_elasticsearch_deb'],
     require   => [
       Package['java7-runtime-headless'],
-      Exec['get_elasticsearch_deb'],
+      Exec['check_elasticsearch_sha1'],
     ]
   }
 
   file { '/etc/elasticsearch/elasticsearch.yml':
     ensure  => present,
-    content => template('logstash/elasticsearch.yml.erb'),
+    content => template('elasticsearch/elasticsearch.yml.erb'),
     replace => true,
     owner   => 'root',
     group   => 'root',
@@ -58,19 +84,9 @@ class logstash::elasticsearch (
     require => Package['elasticsearch'],
   }
 
-  file { '/etc/elasticsearch/templates/logstash_settings.json':
-    ensure  => present,
-    source  => 'puppet:///modules/logstash/es-logstash-template.json',
-    replace => true,
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644',
-    require => File['/etc/elasticsearch/templates'],
-  }
-
   file { '/etc/elasticsearch/default-mapping.json':
     ensure  => present,
-    source  => 'puppet:///modules/logstash/elasticsearch.mapping.json',
+    source  => 'puppet:///modules/elasticsearch/elasticsearch.mapping.json',
     replace => true,
     owner   => 'root',
     group   => 'root',
@@ -80,7 +96,7 @@ class logstash::elasticsearch (
 
   file { '/etc/default/elasticsearch':
     ensure  => present,
-    source  => 'puppet:///modules/logstash/elasticsearch.default',
+    source  => 'puppet:///modules/elasticsearch/elasticsearch.default',
     replace => true,
     owner   => 'root',
     group   => 'root',
