@@ -1,0 +1,11 @@
+{
+  "name": "openstackci-elasticsearch",
+  "version": "0.0.1",
+  "author": "Openstack CI",
+  "summary": "Puppet module for Elasticsearch",
+  "license": "Apache 2.0",
+  "source": "git://git.openstack.org/openstack-infra/puppet-elasticsearch.git",
+  "project_page": "http://ci.openstack.org/",
+  "issues_url": "https://storyboard.openstack.org/#!/project/758",
+  "dependencies": []
+}
