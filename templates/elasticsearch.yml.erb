@@ -109,11 +109,19 @@ node.data: <%= es_template_config['node.data'] %>
 
 # Set the number of shards (splits) of an index (5 by default):
 #
+<% if es_template_config.has_key?('index.number_of_shards') then -%>
+index.number_of_shards: <%= es_template_config['index.number_of_shards'] %>
+<% else -%>
 # index.number_of_shards: 5
+<% end -%>
 
 # Set the number of replicas (additional copies) of an index (1 by default):
 #
+<% if es_template_config.has_key?('index.number_of_replicas') then -%>
+index.number_of_replicas: <%= es_template_config['index.number_of_replicas'] %>
+<% else -%>
 # index.number_of_replicas: 1
+<% end -%>
 
 # Note, that for development on a local machine, with small indices, it usually
 # makes sense to "disable" the distributed features:
