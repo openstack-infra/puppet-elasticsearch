@@ -19,73 +19,42 @@ class elasticsearch (
   $heap_size = '16g',
   $es_template_config = {}
 ) {
-  # install java runtime
-  if ! defined(Package['openjdk-7-jre-headless']) {
-    package { 'openjdk-7-jre-headless':
-      ensure => present,
-    }
-  }
-
+  # Ensure: java runtime and curl
   # Curl is handy for talking to the ES API on localhost. Allows for
   # querying cluster state and deleting indexes and so on.
-  if ! defined(Package['curl']) {
-    package { 'curl':
-      ensure => present,
-    }
-  }
+  ensure_packages(['openjdk-7-jre-headless', 'curl'])
 
-  exec { 'get_elasticsearch_deb':
-    command => "wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-${version}.deb -O /tmp/elasticsearch-${version}.deb",
-    path    => '/bin:/usr/bin',
-    creates => "/tmp/elasticsearch-${version}.deb",
-  }
+  include '::archive'
 
-  exec { 'gen_elasticsearch_deb_sha1':
-    command => "sha1sum elasticsearch-${version}.deb > /tmp/elasticsearch-${version}.deb.sha1.gen",
-    path    => '/bin:/usr/bin',
-    cwd     => '/tmp',
-    creates => "/tmp/elasticsearch-${version}.deb.sha1.gen",
-    require => [
-      Exec['get_elasticsearch_deb'],
-    ]
-  }
+  $file_name = "elasticsearch-${version}.deb"
+  $source_url = "https://download.elasticsearch.org/elasticsearch/elasticsearch/${file_name}"
+  $source_checksum = "${source_url}.sha1.txt"
 
-  exec { 'get_elasticsearch_deb_sha1':
-    command => "wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-${version}.deb.sha1.txt -O /tmp/elasticsearch-${version}.deb.sha1.txt",
-    path    => '/bin:/usr/bin',
-    creates => "/tmp/elasticsearch-${version}.deb.sha1.txt",
-  }
+  $checksum = inline_template('<%= require "open-uri"; open(@source_checksum).read.split.first %>')
 
-  exec { 'check_elasticsearch_sha1':
-    command     => "diff /tmp/elasticsearch-${version}.deb.sha1.txt /tmp/elasticsearch-${version}.deb.sha1.gen",
-    path        => '/bin:/usr/bin',
-    subscribe   => Exec['get_elasticsearch_deb'],
-    refreshonly => true,
-    require     => [
-      Exec['gen_elasticsearch_deb_sha1'],
-      Exec['get_elasticsearch_deb_sha1'],
-    ]
+  archive { "/tmp/elasticsearch-${version}.deb":
+    source        => $source_url,
+    extract       => false,
+    checksum      => $checksum,
+    checksum_type => 'sha1',
   }
 
   # install elastic search
   package { 'elasticsearch':
-    ensure    => latest,
-    source    => "/tmp/elasticsearch-${version}.deb",
-    provider  => 'dpkg',
-    subscribe => Exec['get_elasticsearch_deb_sha1'],
-    require   => [
+    ensure   => latest,
+    source   => "/tmp/elasticsearch-${version}.deb",
+    provider => 'dpkg',
+    require  => [
       Package['openjdk-7-jre-headless'],
-      File['/etc/elasticsearch/elasticsearch.yml'],
-      File['/etc/elasticsearch/default-mapping.json'],
-      File['/etc/default/elasticsearch'],
+      Archive["/tmp/elasticsearch-${version}.deb"],
     ]
   }
 
   file { '/etc/elasticsearch':
-    ensure  => directory,
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0755',
+    ensure => directory,
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0755',
   }
 
   file { '/etc/elasticsearch/elasticsearch.yml':
