@@ -124,4 +124,13 @@ class elasticsearch (
     group   => 'root',
     mode    => '0644',
   }
+
+  cron { 'cleanup-es-logs':
+    command     => 'find /var/log/elasticsearch -type f -mtime +14 -delete',
+    user        => 'root',
+    hour        => '6',
+    minute      => '7',
+    environment => 'PATH=/usr/bin:/bin:/usr/sbin:/sbin',
+    require     => Package['elasticsearch'],
+  }
 }
