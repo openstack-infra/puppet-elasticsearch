@@ -30,6 +30,9 @@
 # multiple clusters on the same network, make sure you're using unique names.
 #
 # cluster.name: elasticsearch
+<% if es_template_config.has_key?('cluster.name') then -%>
+cluster.name: <%= es_template_config['cluster.name'] %>
+<% end -%>
 
 
 #################################### Node #####################################
