@@ -81,6 +81,14 @@ class elasticsearch (
     ]
   }
 
+  if defined( $es_template_config['path.data'] ) {
+    file { $es_template_config['path.data']:
+      ensure  => directory,
+      owner   => 'elasticsearch',
+      require => Package['elasticsearch'],
+    }
+  }
+
   file { '/etc/elasticsearch':
     ensure  => directory,
     owner   => 'root',
