@@ -178,6 +178,9 @@ indices.memory.index_buffer_size: "<%= es_template_config['indices.memory.index_
 # space on creation. For example:
 #
 # path.data: /path/to/data1,/path/to/data2
+<% if es_template_config.has_key?('path.data') then -%>
+path.data: "<%= es_template_config['path.data'] %>"
+<% end -%>
 
 # Path to temporary files:
 #
