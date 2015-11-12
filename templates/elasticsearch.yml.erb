@@ -263,6 +263,13 @@ bootstrap.mlockall: <%= @es_template_config['bootstrap.mlockall'] %>
 #
 # http.enabled: false
 
+<% if es_template_config.has_key?('http.cors.enabled') then -%>
+http.cors.enabled: <%= es_template_config['http.cors.enabled'] %>
+<% end -%>
+
+<% if es_template_config.has_key?('http.cors.allow-origin') then -%>
+http.cors.allow-origin: <%= es_template_config['http.cors.allow-origin'] %>
+<% end -%>
 
 ################################### Gateway ###################################
 
