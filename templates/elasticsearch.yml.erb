@@ -162,6 +162,9 @@ index.store.compress.tv: <%= @es_template_config['index.store.compress.tv'] %>
 <% if @es_template_config.has_key?('indices.memory.index_buffer_size') then -%>
 indices.memory.index_buffer_size: "<%= @es_template_config['indices.memory.index_buffer_size'] %>"
 <% end -%>
+<% if @es_template_config.has_key?('indices.breaker.fielddata.limit') then -%>
+indices.breaker.fielddata.limit: "<%= @es_template_config['indices.breaker.fielddata.limit'] %>"
+<% end -%>
 
 #################################### Paths ####################################
 
