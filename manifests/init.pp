@@ -20,11 +20,11 @@ class elasticsearch (
   $url = 'https://download.elasticsearch.org/elasticsearch/elasticsearch',
   $heap_size = '16g',
   $es_template_config = {},
-) {
+) inherits elasticsearch::params {
   # Ensure: java runtime and curl
   # Curl is handy for talking to the ES API on localhost. Allows for
   # querying cluster state and deleting indexes and so on.
-  ensure_packages(['openjdk-7-jre-headless', 'curl'])
+  ensure_packages(['openjdk-7-jre-headless', 'curl', $::elasticsearch::params::gem_package])
 
   include '::archive'
 
