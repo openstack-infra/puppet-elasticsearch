@@ -60,6 +60,7 @@ class elasticsearch (
       Package['openjdk-7-jre-headless'],
       File['/etc/elasticsearch/elasticsearch.yml'],
       File['/etc/elasticsearch/default-mapping.json'],
+      File['/etc/elasticsearch/logging.yml'],
       File['/etc/default/elasticsearch'],
       Archive["/tmp/elasticsearch-${version}.deb"],
     ]
@@ -83,6 +84,15 @@ class elasticsearch (
   file { '/etc/elasticsearch/elasticsearch.yml':
     ensure  => present,
     content => template('elasticsearch/elasticsearch.yml.erb'),
+    replace => true,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+  }
+
+  file { '/etc/elasticsearch/logging.yml':
+    ensure  => present,
+    source  => 'puppet:///modules/elasticsearch/logging.yml',
     replace => true,
     owner   => 'root',
     group   => 'root',
