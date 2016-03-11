@@ -165,6 +165,9 @@ indices.memory.index_buffer_size: "<%= @es_template_config['indices.memory.index
 <% if @es_template_config.has_key?('indices.breaker.fielddata.limit') then -%>
 indices.breaker.fielddata.limit: "<%= @es_template_config['indices.breaker.fielddata.limit'] %>"
 <% end -%>
+<% if @es_template_config.has_key?('index.routing.allocation.total_shards_per_node') then -%>
+index.routing.allocation.total_shards_per_node: "<%= @es_template_config['index.routing.allocation.total_shards_per_node'] %>"
+<% end -%>
 
 #################################### Paths ####################################
 
