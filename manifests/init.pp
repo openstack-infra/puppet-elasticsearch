@@ -15,11 +15,11 @@
 # Class to install elasticsearch.
 #
 class elasticsearch (
-  $version = '0.20.5',
-  $checksum = undef,
-  $url = 'https://download.elasticsearch.org/elasticsearch/elasticsearch',
-  $heap_size = '16g',
   $es_template_config = {},
+  $checksum           = undef,
+  $heap_size          = '16g',
+  $url                = 'https://download.elasticsearch.org/elasticsearch/elasticsearch',
+  $version            = '0.20.5',
 ) inherits elasticsearch::params {
   # Ensure: java runtime and curl
   # Curl is handy for talking to the ES API on localhost. Allows for
