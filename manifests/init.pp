@@ -18,7 +18,7 @@ class elasticsearch (
   $es_template_config = {},
   $checksum           = undef,
   $heap_size          = '16g',
-  $url                = 'https://download.elasticsearch.org/elasticsearch/elasticsearch',
+  $url                = 'https://download.elastic.co/elasticsearch/elasticsearch',
   $version            = '0.20.5',
 ) inherits elasticsearch::params {
   # Ensure: java runtime and curl
