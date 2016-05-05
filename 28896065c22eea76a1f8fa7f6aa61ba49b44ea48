@@ -1,0 +1,9 @@
+Code-Review+2: Paul Belanger <pabelanger@redhat.com>
+Code-Review+2: yolanda.robla <yolanda.robla-mota@hpe.com>
+Workflow+1: yolanda.robla <yolanda.robla-mota@hpe.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Thu, 05 May 2016 05:59:17 +0000
+Reviewed-on: https://review.openstack.org/312699
+Project: openstack-infra/puppet-elasticsearch
+Branch: refs/heads/master
