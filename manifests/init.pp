@@ -66,6 +66,14 @@ class elasticsearch (
     ]
   }
 
+  file { '/var/lib/elasticsearch':
+    ensure  => directory,
+    group   => 'elasticsearch',
+    owner   => 'elasticsearch',
+    recurse => true,
+    require => Package['elasticsearch'],
+  }
+
   if 'path.data' in $es_template_config {
     file { $es_template_config['path.data']:
       ensure  => directory,
