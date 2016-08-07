@@ -30,8 +30,8 @@
 # multiple clusters on the same network, make sure you're using unique names.
 #
 # cluster.name: elasticsearch
-<% if es_template_config.has_key?('cluster.name') then -%>
-cluster.name: <%= es_template_config['cluster.name'] %>
+<% if @es_template_config.has_key?('cluster.name') then -%>
+cluster.name: <%= @es_template_config['cluster.name'] %>
 <% end -%>
 
 
@@ -184,8 +184,8 @@ index.routing.allocation.total_shards_per_node: "<%= @es_template_config['index.
 # space on creation. For example:
 #
 # path.data: /path/to/data1,/path/to/data2
-<% if es_template_config.has_key?('path.data') then -%>
-path.data: "<%= es_template_config['path.data'] %>"
+<% if @es_template_config.has_key?('path.data') then -%>
+path.data: "<%= @es_template_config['path.data'] %>"
 <% end -%>
 
 # Path to temporary files:
@@ -273,12 +273,12 @@ network.publish_host: <%= @es_template_config['network.publish_host'] %>
 #
 # http.enabled: false
 
-<% if es_template_config.has_key?('http.cors.enabled') then -%>
-http.cors.enabled: <%= es_template_config['http.cors.enabled'] %>
+<% if @es_template_config.has_key?('http.cors.enabled') then -%>
+http.cors.enabled: <%= @es_template_config['http.cors.enabled'] %>
 <% end -%>
 
-<% if es_template_config.has_key?('http.cors.allow-origin') then -%>
-http.cors.allow-origin: <%= es_template_config['http.cors.allow-origin'] %>
+<% if @es_template_config.has_key?('http.cors.allow-origin') then -%>
+http.cors.allow-origin: <%= @es_template_config['http.cors.allow-origin'] %>
 <% end -%>
 
 ################################### Gateway ###################################
