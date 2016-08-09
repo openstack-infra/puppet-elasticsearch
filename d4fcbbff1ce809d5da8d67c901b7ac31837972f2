@@ -1,0 +1,9 @@
+Code-Review+2: yolanda.robla <yroblamo@redhat.com>
+Code-Review+2: Colleen Murphy <colleen@gazlene.net>
+Workflow+1: Colleen Murphy <colleen@gazlene.net>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Tue, 09 Aug 2016 18:34:37 +0000
+Reviewed-on: https://review.openstack.org/352053
+Project: openstack-infra/puppet-elasticsearch
+Branch: refs/heads/master
