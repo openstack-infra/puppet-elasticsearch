@@ -36,3 +36,6 @@ MAX_LOCKED_MEMORY=unlimited
 
 # Additional Java OPTS
 #ES_JAVA_OPTS=
+<% if @es_template_config.has_key?('es_java_opts') then -%>
+ES_JAVA_OPTS=<%= @es_template_config['es_java_opts'] %>
+<% end -%>
