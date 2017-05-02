@@ -24,7 +24,7 @@ class elasticsearch (
   # Ensure: java runtime and curl
   # Curl is handy for talking to the ES API on localhost. Allows for
   # querying cluster state and deleting indexes and so on.
-  ensure_packages(['openjdk-7-jre-headless', 'curl', $::elasticsearch::params::gem_package])
+  ensure_packages(['openjdk-8-jre-headless', 'curl', $::elasticsearch::params::gem_package])
 
   include '::archive'
 
@@ -57,7 +57,7 @@ class elasticsearch (
     source   => "/tmp/elasticsearch-${version}.deb",
     provider => 'dpkg',
     require  => [
-      Package['openjdk-7-jre-headless'],
+      Package['openjdk-8-jre-headless'],
       File['/etc/elasticsearch/elasticsearch.yml'],
       File['/etc/elasticsearch/default-mapping.json'],
       File['/etc/elasticsearch/logging.yml'],
