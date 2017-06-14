@@ -1,0 +1,9 @@
+Code-Review+2: yolanda.robla <yroblamo@redhat.com>
+Code-Review+2: Clark Boylan <cboylan@sapwetik.org>
+Workflow+1: Clark Boylan <cboylan@sapwetik.org>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Wed, 14 Jun 2017 23:56:26 +0000
+Reviewed-on: https://review.openstack.org/461556
+Project: openstack-infra/puppet-elasticsearch
+Branch: refs/heads/master
