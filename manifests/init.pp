@@ -70,7 +70,6 @@ class elasticsearch (
     ensure  => directory,
     group   => 'elasticsearch',
     owner   => 'elasticsearch',
-    recurse => true,
     require => Package['elasticsearch'],
   }
 
