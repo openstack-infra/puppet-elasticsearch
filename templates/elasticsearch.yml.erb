@@ -238,7 +238,11 @@ bootstrap.mlockall: <%= @es_template_config['bootstrap.mlockall'] %>
 
 # Set the bind address specifically (IPv4 or IPv6):
 #
+<% if @es_template_config.has_key?('network.bind_host') then -%>
+network.bind_host: <%= @es_template_config['network.bind_host'] %>
+<% else -%>
 # network.bind_host: 192.168.0.1
+<% end -%>
 
 # Set the address other nodes will use to communicate with this node. If not
 # set, it is automatically derived. It must point to an actual IP address.
