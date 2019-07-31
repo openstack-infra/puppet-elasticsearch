@@ -1,5 +1,3 @@
-# OpenStack Elasticsearch Module
+# This repo has moved to OpenDev
 
-## Overview
-
-The module installs Elasticsearch from debian packages.
+It can now be found at [https://opendev.org/opendev/puppet-elasticsearch](https://opendev.org/opendev/puppet-elasticsearch)
